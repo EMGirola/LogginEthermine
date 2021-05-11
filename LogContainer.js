@@ -35,7 +35,8 @@ module.exports = class {
 
             for (const wall of wallets) {
                 let rawData = await ethermine.fetchMinerCurrentData(wall.getWallet());
-                
+                console.log('RawData of axios: ', rawData);
+
                 if(rawData.status && rawData.status == 'OK') {
                     let unpaid = rawData.data.unpaid;
                     let averageHashrate = rawData.data.averageHashrate;
@@ -90,7 +91,7 @@ module.exports = class {
             let wallets = this.convertRawToWallet(rawWallets.rows);
 
             for (const wallet of wallets) {
-                let rawLogs = await this.pool.query(`SELECT unpaid_balance, average_hashrate created_date FROM log_table where wallet = ${wallet.getWallet()}`)
+                let rawLogs = await this.pool.query(`SELECT unpaid_balance, average_hashrate created_date FROM log_table WHERE log_table.wallet = '${wallet.getWallet()}'`)
                 let logs = this.convertRawToLogs(rawLogs);
                 wallet.logs = logs;
             }
