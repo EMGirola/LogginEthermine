@@ -1,8 +1,8 @@
 const axios = require('axios');
 
 module.exports = class {
-    constructor(API) {
-        this.api = API || process.env.API_ETH;
+    constructor() {
+        this.api = process.env.API_ETH;
     }
 
 
