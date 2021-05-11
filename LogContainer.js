@@ -145,7 +145,7 @@ module.exports = class {
 
         try {
             rawLogs.forEach(log => {
-                logs.push(new Log(log['unpaid_balance'], log['average_hashrate'], log['created_date']));
+                logs.push(new Log((log['unpaid_balance'] / 10e17), log['average_hashrate'], log['created_date']));
             })
         } catch (error) {
             console.log('Failed to convert rawLog to Log: ', error);
