@@ -1,9 +1,10 @@
 const { Pool } = require('pg');
+const Ethermine = require('ethermine-api'); // use ethermine-api in production
+
 
 const Log = require('./LogClass.js');
 const Wallet = require('./WalletClass');
-  
-const Ethermine = require('../src/index.js'); // use ethermine-api in production
+
 const ethermine = new Ethermine();
 
 
@@ -30,8 +31,8 @@ module.exports = class {
             let wallets = this.convertRawToWallet(rawWallets.rows);
             let cont = 0;
 
-            wallets.forEach(wall => {
-                let rawData = await ethermine.getMinerCurrentStats(wall.getWallet());
+            for (const wall of wallets) {
+                let rawData = await this.asPromise(this, ethermine.getMinerCurrentStats, wall.getWallet());
                 
                 if(rawData.status && rawData.status == 'OK') {
                     let unpaid = rawData.data.unpaid;
@@ -40,8 +41,7 @@ module.exports = class {
                     this.pool.query('INSERT INTO log_table(wallet, unpaid_balance, average_hashrate, created_date) values ($1, $2, $3, $4)', values);
                     cont++;
                 }
-
-            });
+            }
 
         } catch (error) {
             console.log('Error fetching logs: ', error);
@@ -87,11 +87,12 @@ module.exports = class {
             let rawWallets = await this.pool.query('SELECT wallet from wallet');
             let wallets = this.convertRawToWallet(rawWallets.rows);
 
-            wallets.forEach(wallet => {
+            for (const wallet of wallets) {
                 let rawLogs = await this.pool.query(`SELECT unpaid_balance, average_hashrate created_date FROM log_table where wallet = ${wallet.getWallet()}`)
                 let logs = this.convertRawToWallet(rawLogs);
                 wallet.logs = logs;
-            })
+            }
+
 
         } catch (error) {
             console.log('Error fetching logs:', error);
@@ -128,6 +129,25 @@ module.exports = class {
         }
 
         return logs;
+    }
+
+
+
+    async asPromise(context, callbackFunction, ...args) {
+        return new Promise((resolve, reject) => {
+            args.push((err, data) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(data);
+                }
+            });
+            if (context) {
+                callbackFunction.call(context, ...args);
+            } else {
+                callbackFunction(...args);
+            }
+        });
     }
 
 }
