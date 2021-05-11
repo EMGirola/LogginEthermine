@@ -26,7 +26,7 @@ app.get('/', async (req, res) => {
 app.get('/fetchLogs', async (req, res) => {
 
     try {
-        let newResponse = await continaer.fetchLogs();
+        let newResponse = await container.fetchLogs();
         return res.status(200).send(`Fetched ${newResponse} new logs`);
     } catch (error) {
         return res.status(500).send(error);
