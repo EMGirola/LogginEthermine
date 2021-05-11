@@ -43,6 +43,12 @@ app.post('/add/wallet/:walletId', async (req,res) => {
         return res.status(400).send('Wallet not found in parameters');
     }
 
+    let wallets = container.fetchWalletById(walletId);
+
+    if(wallets.length > 0) {
+        return res.status(400).send('Wallet already exists');
+    }
+
     try {
         await container.addWallet(walletId);
     } catch (error) {

@@ -127,7 +127,6 @@ module.exports = class {
 
         try {
             rawLogs.forEach(log => {
-                console.log('Log in convert: ', log);
                 logs.push(new Log(log['unpaid_balance'], log['average_hashrate'], log['created_date']));
             })
         } catch (error) {
