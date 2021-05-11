@@ -58,6 +58,28 @@ app.post('/add/wallet/:walletId', async (req,res) => {
     return res.status(200).send('Wallet succesfuly created');
 });
 
+app.delete('/remove/wallet/:walletId', async (req,res) => {
+    let walletId = req.params.walletId;
+
+    if (!walletId) {
+        return res.status(400).send('Wallet not found in parameters');
+    }
+
+    let wallets = await container.fetchWalletById(walletId);
+
+    if(wallets.length > 1 || wallets.length == 0) {
+        return res.status(404).send('Wallet not found');
+    }
+
+    try {
+        await container.removeWallet(wallets[0].wallet_id, wallets[0].wallet);
+        return res.send(200).send('Wallet succesfuly deleted');
+    } catch (error) {
+        return res.send(500).send('Error happen trying to delete the wallet with id: ', wallets[0].wallet_id);
+    }
+
+})
+
 
 app.listen(process.env.PORT || 3000, () => {
     console.log("El servidor esta inicializado.");

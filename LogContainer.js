@@ -24,7 +24,7 @@ module.exports = class {
     }
 
     // CREATE TABLE  wallet (wallet_id serial PRIMARY KEY, wallet varchar(100) UNIQUE, created_date date );
-    // CREATE TABLE  log_table (log_id serial PRIMARY KEY, wallet varchar(100) UNIQUE, unpaid_balance bigint, average_hashrate double precision, created_date date );
+    // CREATE TABLE  log_table (log_id serial PRIMARY KEY, wallet varchar(100), unpaid_balance bigint, average_hashrate double precision, created_date date );
 
     async fetchLogs() {
         let cont = 0;
@@ -39,7 +39,11 @@ module.exports = class {
                 let rawData = await ethermine.fetchMinerCurrentData(wall.getWallet());
                 console.log('RawData of axios: ', rawData);
 
-                if(rawData.status && rawData.status == 'OK') {
+                if(rawData.status 
+                    && rawData.status == 'OK'
+                    && Array.isArray(rawData.data)
+                    ) {
+
                     let unpaid = rawData.data.unpaid;
                     let averageHashrate = rawData.data.averageHashrate;
                     let values = [wall.getWallet(), unpaid, averageHashrate, new Date()];
@@ -61,7 +65,7 @@ module.exports = class {
 
         try {
             
-            rawWallets = await this.pool.query('Select wallet_id from wallet WHERE wallet = ($1)', [wallId]);
+            rawWallets = await this.pool.query('Select wallet_id, wallet from wallet WHERE wallet = ($1)', [wallId]);
 
         } catch (error) {
             console.log('Error fetching account: ', error);
@@ -83,6 +87,19 @@ module.exports = class {
 
         return 'Sucesfully created wallet with id: ' + wallId;
     }
+
+    async removeWallet(id, wallet) {
+        try {
+            await this.pool.query('DELETE FROM log_table WHERE wallet = ($1)', [wallet]);
+            await this.pool.query('DELETE FROM wallet WHERE wallet_id = ($1)', [id]);
+
+        } catch(error) {
+            console.log('Error trying to delete wallet: ', error);
+            throw error;
+        }
+
+    }
+
 
 
     async getAllLogs() {
