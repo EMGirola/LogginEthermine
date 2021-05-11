@@ -110,7 +110,7 @@ module.exports = class {
             try {
                 wallets.add(new Wallet(wall.wallet));
             } catch (error) {
-                console.log('Failed to convert rawData to wallet: ', wall);
+                console.log('Failed to convert rawData to wallet: ', error);
             }
         })
 
