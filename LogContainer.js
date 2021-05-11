@@ -41,7 +41,8 @@ module.exports = class {
 
                 if(rawData.status 
                     && rawData.status == 'OK'
-                    && Array.isArray(rawData.data)
+                    && rawData.data
+                    && rawData.data.time
                     ) {
 
                     let unpaid = rawData.data.unpaid;
