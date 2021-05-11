@@ -123,7 +123,6 @@ module.exports = class {
 
             for (const wallet of wallets) {
                 let rawLogs = await this.pool.query(`SELECT unpaid_balance, average_hashrate, created_date FROM log_table WHERE log_table.wallet = '${wallet.getWallet()}'`)
-                console.log('RawAllLogs: ', rawLogs);
                 let logs = this.convertRawToLogs(rawLogs.rows);
                 wallet.logs = logs;
             }
@@ -157,8 +156,6 @@ module.exports = class {
 
         try {
             rawLogs.forEach(log => {
-                console.log('RawCreatedDate:', log['created_date']);
-                console.log('Converted date: ', new Date(log['created_date']));
                 logs.push(new Log((log['unpaid_balance'] / 10e17), log['average_hashrate'], log['created_date']));
             })
         } catch (error) {
@@ -169,6 +166,7 @@ module.exports = class {
     }
 
     convertDate(date) {
+        date.setMinutes(0,0,0);
         return date.now() / 1000.0;
     }
 }
