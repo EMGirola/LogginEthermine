@@ -25,11 +25,13 @@ module.exports = class {
     // CREATE TABLE  log_table (log_id serial PRIMARY KEY, wallet varchar(100) UNIQUE, unpaid_balance bigint, average_hashrate double precision, created_date date );
 
     async fetchLogs() {
+        let cont = 0;
+
         try {
             
             let rawWallets = await this.pool.query('SELECT wallet from wallet');
             let wallets = this.convertRawToWallet(rawWallets.rows);
-            let cont = 0;
+            
 
             for (const wall of wallets) {
                 let rawData = await ethermine.fetchMinerCurrentData(wall.getWallet());
