@@ -73,9 +73,9 @@ app.delete('/remove/wallet/:walletId', async (req,res) => {
 
     try {
         await container.removeWallet(wallets[0].wallet_id, wallets[0].wallet);
-        return res.send(200).send('Wallet succesfuly deleted');
+        return res.status(200).send('Wallet succesfuly deleted');
     } catch (error) {
-        return res.send(500).send('Error happen trying to delete the wallet with id: ', wallets[0].wallet_id);
+        return res.status(500).send('Error happen trying to delete the wallet with id: ', wallets[0].wallet_id);
     }
 
 })
