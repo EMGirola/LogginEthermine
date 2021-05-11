@@ -79,7 +79,9 @@ module.exports = class {
     async addWallet(wallId) {
         try {
 
-            await this.pool.query('INSERT INTO wallet(wallet, created_date) values ($1, $2)', [wallId, new Date()]);
+            let postSqlDate = convertDate(new Date());
+
+            await this.pool.query('INSERT INTO wallet(wallet, created_date) values ($1, to_timestamp($2))', [wallId, postSqlDate]);
             
         } catch (error) {
             console.log('Error inserting new wallet: ', error);
@@ -164,5 +166,9 @@ module.exports = class {
         }
 
         return logs;
+    }
+
+    convertDate(date) {
+        return date.now() / 1000.0;
     }
 }
