@@ -57,7 +57,7 @@ module.exports = class {
     }
 
     async fetchWalletById(wallId) {
-        let rawWallet;
+        let rawWallets;
 
         try {
             
@@ -68,7 +68,7 @@ module.exports = class {
             throw 'Cannot fetch account by wallId: '+ wallId;
         }
 
-        return rawWallet.rows || [];
+        return rawWallets.rows || [];
     }
 
     async addWallet(wallId) {
