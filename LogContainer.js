@@ -108,7 +108,7 @@ module.exports = class {
 
         rawWallet.forEach(wall => {
             try {
-                wallets.add(new Wallet(wall.wallet));
+                wallets.push(new Wallet(wall.wallet));
             } catch (error) {
                 console.log('Failed to convert rawData to wallet: ', error);
             }
