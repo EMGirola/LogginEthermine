@@ -101,6 +101,15 @@ module.exports = class {
 
     }
 
+    async deleteAllLogs(){
+        try {
+            await this.pool.query('DELETE FROM log_table');
+        } catch (error) {
+            console.log('Error trying to delete all logs');
+            throw 'Error trying to delete logs';
+        }
+    }
+
 
 
     async getAllLogs() {

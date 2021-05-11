@@ -80,6 +80,16 @@ app.delete('/remove/wallet/:walletId', async (req,res) => {
 
 })
 
+app.delete('/remove/logs/all', async (req, res) => {
+    try {
+        await container.deleteAllLogs();
+        return res.status(200).send('Sucesfully deleted all logs');
+
+    } catch (error) {
+        return res.status(500).send(error);
+    }
+})
+
 
 app.listen(process.env.PORT || 3000, () => {
     console.log("El servidor esta inicializado.");
