@@ -29,6 +29,7 @@ app.get('/fetchLogs', async (req, res) => {
         let newResponse = await container.fetchLogs();
         return res.status(200).send(`Fetched ${newResponse} new logs`);
     } catch (error) {
+        console.log('Error processing: ', error);
         return res.status(500).send(error);
     }
 
