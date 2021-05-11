@@ -89,7 +89,7 @@ module.exports = class {
 
             for (const wallet of wallets) {
                 let rawLogs = await this.pool.query(`SELECT unpaid_balance, average_hashrate created_date FROM log_table where wallet = ${wallet.getWallet()}`)
-                let logs = this.convertRawToWallet(rawLogs);
+                let logs = this.convertRawToLogs(rawLogs);
                 wallet.logs = logs;
             }
 
