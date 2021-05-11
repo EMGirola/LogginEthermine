@@ -1,11 +1,11 @@
 const { Pool } = require('pg');
-const Ethermine = require('ethermine-api'); // use ethermine-api in production
 
 
 const Log = require('./LogClass.js');
 const Wallet = require('./WalletClass');
-
+const Ethermine = require('./Ethermine.js');
 const ethermine = new Ethermine();
+
 
 
 module.exports = class {
@@ -32,7 +32,7 @@ module.exports = class {
             let cont = 0;
 
             for (const wall of wallets) {
-                let rawData = await this.asPromise(this, ethermine.getMinerCurrentStats, wall.getWallet());
+                let rawData = await ethermine.fetchMinerCurrentData(wall.getWallet());
                 
                 if(rawData.status && rawData.status == 'OK') {
                     let unpaid = rawData.data.unpaid;
@@ -130,24 +130,4 @@ module.exports = class {
 
         return logs;
     }
-
-
-
-    async asPromise(context, callbackFunction, ...args) {
-        return new Promise((resolve, reject) => {
-            args.push((err, data) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(data);
-                }
-            });
-            if (context) {
-                callbackFunction.call(context, ...args);
-            } else {
-                callbackFunction(...args);
-            }
-        });
-    }
-
 }
