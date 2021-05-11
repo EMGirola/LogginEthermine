@@ -156,7 +156,10 @@ module.exports = class {
 
         try {
             rawLogs.forEach(log => {
-                logs.push(new Log((log['unpaid_balance'] / 10e17), log['average_hashrate'], log['created_date']));
+                let date = new Date(log['created_date']);
+                date.setMinutes(0,0,0);
+
+                logs.push(new Log((log['unpaid_balance'] / 10e17), log['average_hashrate'], date));
             })
         } catch (error) {
             console.log('Failed to convert rawLog to Log: ', error);
