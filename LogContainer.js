@@ -167,6 +167,6 @@ module.exports = class {
 
     convertDate(date) {
         date.setMinutes(0,0,0);
-        return date.now() / 1000.0;
+        return date.getTime() / 1000.0;
     }
 }
