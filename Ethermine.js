@@ -8,7 +8,8 @@ module.exports = class {
 
     async fetchMinerCurrentData(wallet) {
         try {
-            return await axios.get(`${this.api}/miner/${wallet}/currentStats`).data;
+            let resp = await axios.get(`${this.api}/miner/${wallet}/currentStats`);
+            return resp.data;
         } catch (error) {
             console.log('Error trying to get: ', error);
             throw error;
