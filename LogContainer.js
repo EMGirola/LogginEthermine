@@ -84,11 +84,11 @@ module.exports = class {
 
 
     async getAllLogs() {
-        let logs;
+        let wallets;
 
         try {
             let rawWallets = await this.pool.query('SELECT wallet from wallet');
-            let wallets = this.convertRawToWallet(rawWallets.rows);
+            wallets = this.convertRawToWallet(rawWallets.rows);
 
             for (const wallet of wallets) {
                 let rawLogs = await this.pool.query(`SELECT unpaid_balance, average_hashrate created_date FROM log_table WHERE log_table.wallet = '${wallet.getWallet()}'`)
@@ -102,7 +102,7 @@ module.exports = class {
             throw 'Error fetching logs';
         }
 
-        return logs;
+        return wallets;
     }
 
 
