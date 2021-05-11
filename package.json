@@ -1,0 +1,25 @@
+{
+  "name": "logginethermine",
+  "version": "1.0.0",
+  "description": "Logging ethermine to a database",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EMGirola/LogginEthermine.git"
+  },
+  "author": "Quelo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EMGirola/LogginEthermine/issues"
+  },
+  "homepage": "https://github.com/EMGirola/LogginEthermine#readme",
+  "dependencies": {
+    "ethermine-api": "^1.0.7",
+    "express": "^4.17.1",
+    "pg": "^8.6.0"
+  }
+}
