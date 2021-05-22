@@ -47,7 +47,7 @@ module.exports = class {
 
                     let unpaid = rawData.data.unpaid;
                     let averageHashrate = rawData.data.averageHashrate;
-                    let values = [wall.getWallet(), unpaid, averageHashrate, new Date()];
+                    let values = [wall.getWallet(), unpaid, averageHashrate, new Date().toLocaleString("es-ES", { timeZone: 'America/Argentina/Buenos_Aires'})];
                     this.pool.query('INSERT INTO log_table(wallet, unpaid_balance, average_hashrate, created_date) values ($1, $2, $3, $4)', values);
                     cont++;
                 }
