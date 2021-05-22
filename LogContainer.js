@@ -176,7 +176,6 @@ module.exports = class {
 
     convertLocaleDateToUTC(date) {
 
-        let date = new Date();
         let actDate = date.toLocaleString("es-ES", { timeZone: 'America/Argentina/Buenos_Aires'});
         let splittedTime = actDate.split(" ");
         let splitedDate = splittedTime[0].split("/");
