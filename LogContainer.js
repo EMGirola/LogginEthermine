@@ -33,7 +33,7 @@ module.exports = class {
             
             let rawWallets = await this.pool.query('SELECT wallet FROM wallet');
             let wallets = this.convertRawToWallet(rawWallets.rows);
-            var dateToInsert = getTodayOffTime();
+            var dateToInsert = this.getTodayOffTime();
 
 
             for (const wall of wallets) {
