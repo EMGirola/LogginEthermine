@@ -31,9 +31,10 @@ module.exports = class {
 
         try {
             
-            let rawWallets = await this.pool.query('SELECT wallet from wallet');
+            let rawWallets = await this.pool.query('SELECT wallet FROM wallet');
             let wallets = this.convertRawToWallet(rawWallets.rows);
-            
+            var dateToInsert = getTodayOffTime();
+
 
             for (const wall of wallets) {
                 let rawData = await ethermine.fetchMinerCurrentData(wall.getWallet());
@@ -45,7 +46,6 @@ module.exports = class {
                     && rawData.data.time
                     ) {
 
-                    let dateToInsert = convertLocaleDateToUTC(new Date());
                     let unpaid = rawData.data.unpaid;
                     let averageHashrate = rawData.data.averageHashrate;
                     let values = [wall.getWallet(), unpaid, averageHashrate, dateToInsert];
@@ -174,7 +174,9 @@ module.exports = class {
         return date.getTime() / 1000.0;
     }
 
-    convertLocaleDateToUTC(date) {
+    getTodayOffTime() {
+
+        let date = new Date();
 
         let actDate = date.toLocaleString("es-ES", { timeZone: 'America/Argentina/Buenos_Aires'});
         let splittedTime = actDate.split(" ");
