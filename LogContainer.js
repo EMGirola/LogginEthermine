@@ -45,9 +45,7 @@ module.exports = class {
                     && rawData.data.time
                     ) {
 
-                    let dateToInsert = new Date().toLocaleString("es-ES", { timeZone: 'America/Argentina/Buenos_Aires'});
-                    dateToInsert = dateToInsert.replace(" ", "T")
-                    dateToInsert = dateToInsert + '.000Z';
+                    let dateToInsert = convertLocaleDateToUTC(new Date());
                     let unpaid = rawData.data.unpaid;
                     let averageHashrate = rawData.data.averageHashrate;
                     let values = [wall.getWallet(), unpaid, averageHashrate, dateToInsert];
@@ -174,5 +172,19 @@ module.exports = class {
     convertDate(date) {
         date.setMinutes(0,0,0);
         return date.getTime() / 1000.0;
+    }
+
+    convertLocaleDateToUTC(date) {
+
+        let date = new Date();
+        let actDate = date.toLocaleString("es-ES", { timeZone: 'America/Argentina/Buenos_Aires'});
+        let splittedTime = actDate.split(" ");
+        let splitedDate = splittedTime[0].split("/");
+
+        let day = (splitedDate[0] > 10) ? splitedDate[0] : `0${splitedDate[0]}`;
+        let month = (splitedDate[1] > 10) ? splitedDate[1] : `0${splitedDate[1]}`;
+        let year = splitedDate[2];
+
+        return `${year}-${month}-${day}T${splittedTime[1]}.000Z`;
     }
 }
